@@ -4,7 +4,7 @@
   "description": "Projet Efreitech",
   "scripts": {
     "dev": "npx babel-node src/main.js",
-    "build" : "npx babel src --out-dir lib "
+    "build": "npx babel src --out-dir lib "
   },
   "repository": {
     "type": "git",
@@ -18,11 +18,14 @@
   },
   "homepage": "https://github.com/MaximeG2018/mORM.js#readme",
   "dependencies": {
+    "lodash": "^4.17.11",
+    "pg": "^7.8.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
-    "@babel/node": "^7.2.2"
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/preset-env": "^7.3.4"
   }
 }
