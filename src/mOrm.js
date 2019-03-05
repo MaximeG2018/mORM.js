@@ -6,16 +6,17 @@ export default class mOrm {
 
   async createConnection(dbConfig = {}) {
       if (isEmpty(dbConfig)){
-        if(!existSync(this.configPathName)){
+        if(!existSync(path.join(__dirname,this.configPathName))){
           throw new Error("Configuration file morm.config.js required")
         }
         this.config = require (this.configPathName);
       }else {
         if (dbConfig.uri){
            const regExp = /^(.*):\/\/(.*):(.*)@(.*):(\d)+\/(.*)/g
-           const [, type, username, password, host, port, database ] = regExp.exec(dbConfig.uri);
+           const matches = regExp.exec(dbConfig.uri)
+           const [, type, username, password, host, port, database ] = matches
 
-           this.dbConfig = {
+           this.config = {
              type,
              username,
              password,
@@ -24,7 +25,8 @@ export default class mOrm {
              database
            };
         } else {
-          this.dbConfig = dbConfig;
+          this.config = dbConfig;
+          console.log(this.config)
         }
       }
   }

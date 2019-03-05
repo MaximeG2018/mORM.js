@@ -6,6 +6,7 @@ import mOrm from "./mOrm";
 
   try {
     await orm.createConnection({
+       //"uri": "postgres://majdi:majdi@localhost:5432/iLovePragmatic"
       type: "postgres",
       host: "localhost",
       port: 5432,
