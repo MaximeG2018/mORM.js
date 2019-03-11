@@ -109,13 +109,10 @@ export default class Postgresql extends Core {
         const values = Object.values(data)
         const params = values.map((_, i) => `$${i + 1}`).join(', ')
 
-        //console.log(`INSERT INTO ${tableName} (${columns}) VALUES (${params})`);
-
           this.client.query(`INSERT INTO ${tableName} (${columns}) VALUES (${params}) RETURNING *`, values, (err, result) => {
           if (err) {
               reject(err);
           } else {
-              //console.log(result);
               resolve(result.rows[0]);
             }
           });
@@ -126,7 +123,7 @@ export default class Postgresql extends Core {
   async count(tableName)  {
     return new Promise((resolve, reject) => {
       console.log(tableName);
-        this.client.query(`SELECT COUNT(*) FROM ${tableName}`, (err, result) => {
+        this.client.query(`SELECT COUNT(1) FROM ${tableName}`, (err, result) => {
         if (err) {
             reject(err);
         } else {
@@ -154,10 +151,11 @@ export default class Postgresql extends Core {
   // METHODE UPDATE
   async update (data, tableName) {
     return new Promise((resolve, reject) => {
+      const columns = Object.keys(data).join(', ');
       const values = Object.values(data);
-      let query = `UPDATE ${tableName}
-                   SET lastname = ${data}`;
-      this.client.query(query, (err, result) => {
+      const params = values.map((_, i) => `$${i + 1}`).join(', ');
+
+      this.client.query(`UPDATE ${tableName} SET ${columns}`,(err, result) => {
         if(err){
           reject(err)
         }else {
@@ -165,5 +163,24 @@ export default class Postgresql extends Core {
         }
       });
     });
+  }
+
+  // METHODE REMOVE
+  async remove(data, tableName){
+    return new Promise((resolve, reject) => {
+      const columns = Object.keys(data).join(', ');
+      const values = Object.values(data);
+      const params = values.map((_, i) => `$${i + 1}`).join(', ');
+      console.log(columns);
+      console.log(values);
+
+      this.client.query(`DELETE FROM ${tableName} WHERE ${columns} = 'Chiper'`, (err, result) => {
+        if(err){
+          reject(err)
+        }else {
+          resolve(result.rows[0])
+        }
+      })
+    })
   }
 }

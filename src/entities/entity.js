@@ -16,8 +16,12 @@ export default class Entity {
     return this.dbInstance.findAll(this.tableName, { attributes });
   }
 
-  async update(data){
+  async update(data) {
     return this.dbInstance.update(data, this.tableName)
+  }
+
+  async remove(data) {
+    return this.dbInstance.remove(data, this.tableName)
   }
   // async findOne({ where, attributes }) {
   //   return this.dbInstance.findOne(this.tableName, {})
@@ -26,10 +30,6 @@ export default class Entity {
   // async findByPk(id, { attributes }) {
   //   return this.dbInstance.findByPk(this.name, id, { attributes });
   // }
-  //
-  // async findOne({ where, attributes }) {}
-  //
-  // async update(data) {}
   //
   // async remove(data) {}
 

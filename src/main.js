@@ -9,8 +9,10 @@ import Student from "./entities/student"
     await orm.createConnection({
       type: "postgres",
       host: "localhost",
-      port: 5432,
-      username: "20120107",
+      //port: 5432,
+      //username: "20120107",
+      port: 5431,
+      username: 'efreitech',
       password: "",
       database: "iLovePragmatic",
       synchronize: true
@@ -40,7 +42,7 @@ import Student from "./entities/student"
 
   // Insert row in table (Insert) --> Chiper
   const insertChiper = await studentEntity.save(studentChiper)
-  console.log(`New student :  ${insertChiper.firstname} ${insertChiper.lastname} ${insertChiper.age}`)
+  console.log(`New student : ${insertChiper.firstname} ${insertChiper.lastname} ${insertChiper.age}`)
 
   // Number of rows in table
   const count = await studentEntity.count()
@@ -55,21 +57,17 @@ import Student from "./entities/student"
   console.log(`Find all student(s) with attributes (lastname) : ${findAllStudentsAttributes.map(s => `${s.lastname}`).join(', ')}`)
 
   // Update student
-  studentDora.lastname = "Doritos"
-  const updateStudent = await studentEntity.update(studentDora)
-  console.log(`Update student : ${updateStudent.lastname}`)
-  //const deleteDora = await studentEntity.remove(student)
+  // studentDora.lastname = "Doritos"
+  // const updateStudent = await studentEntity.update(studentDora)
+  //console.log(`Update student : ${updateStudent.lastname}`)
+
+  // Remove student
+  const removeStudent = await studentEntity.remove(studentChiper)
+  console.log(`Remove student : ${removeStudent.firstname}`);
 
   // // Find student by Id
   // const findById = await studentEntity.findByPk(id,{})
   // console.log(`Find student by Id : ${findById.firstname} ${findById.lastname}`)
-  //
-  // // Find student by firstname (Dora)
-  // const findOne = await studentEntity.findOne({
-  //   where: {firstname:'Dora'},
-  //   attributes: ['id', ['firstname', 'lastname']]
-  // })
-  // console.log(`Find student by firstname  : ${findOne.firstname} ${findOne.lastname}`)
 
   }catch (err){
     console.log(err);
