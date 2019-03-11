@@ -1,11 +1,27 @@
 const { Client } = require('pg')
-const client = new Client()
 
-const connectionString = "postgresql://efrei@10.0.2.38:5432/efrei";
+export default class Postgresql extends Core {
+  constructor(config){
+    super(config)
+  }
+  async initialize(){
+    let config = {
+      //host, port, username, password, database
+      host: host,
+      port: port,
+      username: username,
+      password: password,
+      database: database
+    }
 
-client.connect()
+    const client = new Client()
+    const connectionString = "postgresql://efrei@10.0.2.38:5432/efrei";
 
-client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-  console.log(err ? err.stack : res.rows[0].message) // Hello World!
-  client.end()
-})
+    client.connect()
+
+    client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
+      console.log(err ? err.stack : res.rows[0].message) // Hello World!
+      client.end()
+    })
+  }
+}

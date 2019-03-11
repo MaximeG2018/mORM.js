@@ -9,7 +9,7 @@ export default class mOrm {
         if(!existSync(path.join(__dirname,this.configPathName))){
           throw new Error("Configuration file morm.config.js required")
         }
-        this.config = require (this.configPathName);
+        this.config = require(this.configPathName);
       }else {
         if (dbConfig.uri){
            const regExp = /^(.*):\/\/(.*):(.*)@(.*):(\d)+\/(.*)/g
@@ -29,5 +29,13 @@ export default class mOrm {
           console.log(this.config)
         }
       }
+  }
+
+  getEntity(name){
+    for (let entityName in this.entities){
+      if (entityName == name){
+          // ???
+      }
+    }
   }
 }
