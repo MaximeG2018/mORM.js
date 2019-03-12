@@ -26,6 +26,7 @@ export default class Postgresql extends Core {
     })
 
     try {
+
       await this.client.connect()
       await this.createTable()
   }
@@ -102,7 +103,7 @@ export default class Postgresql extends Core {
     }
   }
 
-  // METHODE SAVE (INSERT)
+  // METHODE save (insert)
   async save(data, tableName) {
       return new Promise((resolve, reject) => {
         const columns = Object.keys(data).join(", ")
@@ -119,10 +120,9 @@ export default class Postgresql extends Core {
       });
   }
 
- // METHODE COUNT
+ // METHODE count
   async count(tableName)  {
     return new Promise((resolve, reject) => {
-      console.log(tableName);
         this.client.query(`SELECT COUNT(1) FROM ${tableName}`, (err, result) => {
         if (err) {
             reject(err);
@@ -133,7 +133,7 @@ export default class Postgresql extends Core {
     });
   }
 
-  // METHODE FINDALL
+  // METHODE findAll
   async findAll(tableName, { attributes }) {
     return new Promise((resolve, reject) => {
       let query = ` SELECT ${isEmpty(attributes) ? '*' : attributes.join(", ")}
@@ -144,18 +144,25 @@ export default class Postgresql extends Core {
         }else {
           resolve(result.rows)
         }
-      });
-    });
-  }
+     });
+   });
+ }
 
-  // METHODE UPDATE
-  async update (data, tableName) {
+  // METHODE findOne
+  async findOne(tableName, { attributes, where }) {
     return new Promise((resolve, reject) => {
-      const columns = Object.keys(data).join(', ');
-      const values = Object.values(data);
-      const params = values.map((_, i) => `$${i + 1}`).join(', ');
+      let array = []
+      for (const key in where ){
+        array.push(key+"="+where[key])
+      }
+      array = array.join(' AND ')
+      let query = ` SELECT ${isEmpty(attributes) ? '*' : attributes.join(", ")}
+                    FROM ${tableName}
+                    WHERE firstname = 'Chiper'
+                    LIMIT 1
+                    `;
 
-      this.client.query(`UPDATE ${tableName} SET ${columns}`,(err, result) => {
+      this.client.query(query, (err, result) => {
         if(err){
           reject(err)
         }else {
@@ -165,20 +172,30 @@ export default class Postgresql extends Core {
     });
   }
 
-  // METHODE REMOVE
-  async remove(data, tableName){
+  // METHODE update
+  async update (data, tableName) {
     return new Promise((resolve, reject) => {
-      const columns = Object.keys(data).join(', ');
+      const querySet = Object.keys(data).map((key, i) => { return `${key}=$${i+1}` }).join(', ');
       const values = Object.values(data);
       const params = values.map((_, i) => `$${i + 1}`).join(', ');
-      console.log(columns);
-      console.log(values);
-
-      this.client.query(`DELETE FROM ${tableName} WHERE ${columns} = 'Chiper'`, (err, result) => {
+      this.client.query(`UPDATE ${tableName} SET ${querySet} WHERE id=${data.id}`, values, (err, result) => {
         if(err){
           reject(err)
         }else {
-          resolve(result.rows[0])
+          resolve(result)
+        }
+      });
+    });
+  }
+
+  // METHODE remove
+  async remove(data, tableName){
+    return new Promise((resolve, reject) => {
+      this.client.query(`DELETE FROM ${tableName} WHERE id=${data.id} `, (err, result) => {
+        if(err){
+          reject(err)
+        }else {
+          resolve(result)
         }
       })
     })

@@ -9,10 +9,8 @@ import Student from "./entities/student"
     await orm.createConnection({
       type: "postgres",
       host: "localhost",
-      //port: 5432,
-      //username: "20120107",
-      port: 5431,
-      username: 'efreitech',
+      port: 5432,
+      username: "20120107",
       password: "",
       database: "iLovePragmatic",
       synchronize: true
@@ -23,15 +21,24 @@ import Student from "./entities/student"
   )
 
     let studentDora = {
+      id: 1,
       firstname: 'Dora',
       lastname: 'Lexploratrice',
-      age: '10'
+      age: 10
     }
 
   let studentChiper = {
+    id: 2,
     firstname: 'Chiper',
     lastname: 'Fox',
-    age: '5'
+    age: 5
+  }
+
+  let studentTico = {
+    id: 3,
+    firstname: 'Tico',
+    lastname: 'Remove',
+    age: 12
   }
 
   const studentEntity = orm.getEntity('Student')
@@ -44,8 +51,11 @@ import Student from "./entities/student"
   const insertChiper = await studentEntity.save(studentChiper)
   console.log(`New student : ${insertChiper.firstname} ${insertChiper.lastname} ${insertChiper.age}`)
 
+  const insertTico = await studentEntity.save(studentTico)
+  console.log(`New student : ${insertTico.firstname} ${insertTico.lastname} ${insertTico.age}`)
+
   // Number of rows in table
-  const count = await studentEntity.count()
+  let count = await studentEntity.count()
   console.log(`Number of Student(s) : ${count}`);
 
   // Get all student(s)
@@ -57,20 +67,29 @@ import Student from "./entities/student"
   console.log(`Find all student(s) with attributes (lastname) : ${findAllStudentsAttributes.map(s => `${s.lastname}`).join(', ')}`)
 
   // Update student
-  // studentDora.lastname = "Doritos"
-  // const updateStudent = await studentEntity.update(studentDora)
-  //console.log(`Update student : ${updateStudent.lastname}`)
+
+  studentDora.firstname = "Doritos"
+  studentDora.lastname = "Exploractrice"
+  studentDora.age = "10"
+  const updateStudent = await studentEntity.update(studentDora)
+  console.log(`Update student : ${studentDora.lastname} ${studentDora.firstname} ${studentDora.age}`)
 
   // Remove student
-  const removeStudent = await studentEntity.remove(studentChiper)
-  console.log(`Remove student : ${removeStudent.firstname}`);
+  const removeStudentTico = await studentEntity.remove(studentTico)
+  console.log(`Remove student : Tico`);
 
-  // // Find student by Id
-  // const findById = await studentEntity.findByPk(id,{})
-  // console.log(`Find student by Id : ${findById.firstname} ${findById.lastname}`)
+  // Number of rows in table
+  count = await studentEntity.count()
+  console.log(`Number of Student(s) after remove : ${count}`);
+
+  // FindOne Student
+  const findOneStudent = await studentEntity.findOne({attributes : ['firstname', 'lastname'], where: {firstname: 'Chiper', lastname:'Fox'}})
+  console.log(`Find student : ${findOneStudent.firstname} ${findOneStudent.lastname}`);
+
 
   }catch (err){
     console.log(err);
     process.exit(-1);
   }
+
 })()

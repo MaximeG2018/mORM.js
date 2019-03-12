@@ -12,8 +12,12 @@ export default class Entity {
     return this.dbInstance.count(this.tableName);
   }
 
-  async findAll({ attributes } = {} ) {
+  async findAll({ attributes } = {}) {
     return this.dbInstance.findAll(this.tableName, { attributes });
+  }
+
+  async findOne(data) {
+    return this.dbInstance.findOne(this.tableName, data)
   }
 
   async update(data) {
@@ -23,14 +27,4 @@ export default class Entity {
   async remove(data) {
     return this.dbInstance.remove(data, this.tableName)
   }
-  // async findOne({ where, attributes }) {
-  //   return this.dbInstance.findOne(this.tableName, {})
-  // }
-
-  // async findByPk(id, { attributes }) {
-  //   return this.dbInstance.findByPk(this.name, id, { attributes });
-  // }
-  //
-  // async remove(data) {}
-
 }
