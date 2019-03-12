@@ -2,7 +2,7 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username":"Maxime",
-  "password":"Maxime",
+  "username":"20120107",
+  "password":"",
   "database": "iLovePragmatic"
 }
